@@ -36,8 +36,12 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 group">
-            <Heart className="w-8 h-8 text-primary group-hover:fill-primary transition-all" />
-            <span className="text-2xl font-display font-bold text-foreground">
+            <Heart className={`w-8 h-8 group-hover:fill-primary transition-all ${
+              isScrolled ? "text-primary" : "text-white"
+            }`} />
+            <span className={`text-2xl font-display font-bold transition-colors ${
+              isScrolled ? "text-foreground" : "text-white drop-shadow-lg"
+            }`}>
               Crafted with Love
             </span>
           </Link>
@@ -49,9 +53,13 @@ const Navbar = () => {
                 key={link.path}
                 to={link.path}
                 className={`font-medium transition-colors relative group ${
-                  isActive(link.path)
-                    ? "text-primary"
-                    : "text-foreground hover:text-primary"
+                  isScrolled
+                    ? isActive(link.path)
+                      ? "text-primary"
+                      : "text-foreground hover:text-primary"
+                    : isActive(link.path)
+                      ? "text-white font-bold"
+                      : "text-white/90 hover:text-white"
                 }`}
               >
                 {link.name}
@@ -68,7 +76,7 @@ const Navbar = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden"
+            className={`md:hidden ${!isScrolled && "text-white hover:bg-white/10"}`}
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

@@ -3,6 +3,15 @@ import ProductCard from "@/components/ProductCard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
+import greetingCardsImg from "@/assets/products/greeting-cards.jpg";
+import candlesImg from "@/assets/products/candles.jpg";
+import potteryBowlImg from "@/assets/products/pottery-bowl.jpg";
+import silverNecklaceImg from "@/assets/products/silver-necklace.jpg";
+import embroideryImg from "@/assets/products/embroidery.jpg";
+import paperFlowersImg from "@/assets/products/paper-flowers.jpg";
+import ceramicMugsImg from "@/assets/products/ceramic-mugs.jpg";
+import braceletImg from "@/assets/products/bracelet.jpg";
+import crossStitchImg from "@/assets/products/cross-stitch.jpg";
 
 const Shop = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -15,63 +24,63 @@ const Shop = () => {
       name: "Watercolor Greeting Cards",
       price: 12.99,
       description: "Hand-painted cards perfect for any occasion",
-      image: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=800",
+      image: greetingCardsImg,
       category: "Paper Crafts",
     },
     {
       name: "Lavender Soy Candles",
       price: 18.99,
       description: "Hand-poured candles with natural essential oils",
-      image: "https://images.unsplash.com/photo-1602874801006-95415c5babc0?w=800",
+      image: candlesImg,
       category: "Home Decor",
     },
     {
       name: "Clay Pottery Bowl",
       price: 34.99,
       description: "Handcrafted ceramic bowl with unique glaze",
-      image: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=800",
+      image: potteryBowlImg,
       category: "Clay Art",
     },
     {
       name: "Handmade Silver Necklace",
       price: 45.99,
       description: "Elegant sterling silver pendant with gemstone",
-      image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800",
+      image: silverNecklaceImg,
       category: "Jewelry",
     },
     {
       name: "Embroidered Wall Art",
       price: 28.99,
       description: "Colorful floral design on natural linen",
-      image: "https://images.unsplash.com/photo-1611003228941-98852ba62227?w=800",
+      image: embroideryImg,
       category: "Embroidery",
     },
     {
       name: "Paper Flower Bouquet",
       price: 22.99,
       description: "Everlasting paper flowers in vibrant colors",
-      image: "https://images.unsplash.com/photo-1487070183336-b863922373d4?w=800",
+      image: paperFlowersImg,
       category: "Paper Crafts",
     },
     {
       name: "Ceramic Mug Set",
       price: 38.99,
       description: "Set of 4 hand-thrown mugs with unique patterns",
-      image: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800",
+      image: ceramicMugsImg,
       category: "Clay Art",
     },
     {
       name: "Beaded Bracelet",
       price: 16.99,
       description: "Handwoven bracelet with natural stones",
-      image: "https://images.unsplash.com/photo-1611652022419-a9419f74343a?w=800",
+      image: braceletImg,
       category: "Jewelry",
     },
     {
       name: "Cross-Stitch Kit",
       price: 24.99,
       description: "Complete kit with pattern, thread, and fabric",
-      image: "https://images.unsplash.com/photo-1452827073306-6e6e661baf57?w=800",
+      image: crossStitchImg,
       category: "Embroidery",
     },
   ];

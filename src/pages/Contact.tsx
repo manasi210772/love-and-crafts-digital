@@ -5,16 +5,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
-
 const Contact = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     toast.success("Message sent! We'll get back to you soon. 💌");
     (e.target as HTMLFormElement).reset();
   };
-
-  return (
-    <div className="pt-24 pb-16 animate-fade-in">
+  return <div className="pt-24 pb-16 animate-fade-in">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="font-display text-5xl font-bold mb-4">Get in Touch</h1>
@@ -33,44 +30,21 @@ const Contact = () => {
                   <Label htmlFor="name" className="text-base font-medium">
                     Name
                   </Label>
-                  <Input
-                    id="name"
-                    name="name"
-                    required
-                    className="mt-2 h-12"
-                    placeholder="Your name"
-                  />
+                  <Input id="name" name="name" required className="mt-2 h-12" placeholder="Your name" />
                 </div>
                 <div>
                   <Label htmlFor="email" className="text-base font-medium">
                     Email
                   </Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    className="mt-2 h-12"
-                    placeholder="your@email.com"
-                  />
+                  <Input id="email" name="email" type="email" required className="mt-2 h-12" placeholder="your@email.com" />
                 </div>
                 <div>
                   <Label htmlFor="message" className="text-base font-medium">
                     Message
                   </Label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    required
-                    className="mt-2 min-h-[150px]"
-                    placeholder="Tell us what's on your mind..."
-                  />
+                  <Textarea id="message" name="message" required className="mt-2 min-h-[150px]" placeholder="Tell us what's on your mind..." />
                 </div>
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="w-full bg-primary hover:bg-primary/90"
-                >
+                <Button type="submit" size="lg" className="w-full bg-primary hover:bg-primary/90">
                   Send Message
                 </Button>
               </form>
@@ -130,37 +104,7 @@ const Contact = () => {
               </CardContent>
             </Card>
 
-            <Card className="border-border rounded-3xl bg-gradient-warm text-white">
-              <CardContent className="p-6">
-                <h3 className="font-display text-xl font-semibold mb-4">Follow Our Journey</h3>
-                <p className="mb-4 opacity-90">
-                  Join our creative community on social media for daily inspiration!
-                </p>
-                <div className="flex space-x-3">
-                  <Button
-                    variant="secondary"
-                    size="icon"
-                    className="bg-white/20 hover:bg-white/30 border-0"
-                  >
-                    <Instagram className="w-5 h-5" />
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    size="icon"
-                    className="bg-white/20 hover:bg-white/30 border-0"
-                  >
-                    <Youtube className="w-5 h-5" />
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    size="icon"
-                    className="bg-white/20 hover:bg-white/30 border-0"
-                  >
-                    <Mail className="w-5 h-5" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            
           </div>
         </div>
 
@@ -168,22 +112,13 @@ const Contact = () => {
         <div className="mt-16">
           <Card className="border-border rounded-3xl overflow-hidden">
             <div className="aspect-video w-full">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.019394323267!2d-122.41941492346644!3d37.77492997187697!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085809c6c8f4459%3A0xb10ed6d9b5050fa5!2sUnion%20Square%2C%20San%20Francisco%2C%20CA%2094108!5e0!3m2!1sen!2sus!4v1699564859845!5m2!1sen!2sus"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Store Location"
-              ></iframe>
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.019394323267!2d-122.41941492346644!3d37.77492997187697!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085809c6c8f4459%3A0xb10ed6d9b5050fa5!2sUnion%20Square%2C%20San%20Francisco%2C%20CA%2094108!5e0!3m2!1sen!2sus!4v1699564859845!5m2!1sen!2sus" width="100%" height="100%" style={{
+              border: 0
+            }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Store Location"></iframe>
             </div>
           </Card>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Contact;

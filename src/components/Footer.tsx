@@ -3,13 +3,35 @@ import { Heart, Instagram, Youtube, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const Footer = () => {
+  const subscribe = useMutation({
+    mutationFn: async (email: string) => {
+      const { error } = await supabase
+        .from("newsletter_subscribers")
+        .insert({ email });
+      
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("Thanks for subscribing! 💌");
+    },
+    onError: (error: any) => {
+      if (error.message.includes("duplicate")) {
+        toast.error("You're already subscribed!");
+      } else {
+        toast.error("Failed to subscribe. Please try again.");
+      }
+    },
+  });
+
   const handleNewsletterSignup = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const email = formData.get("email");
-    toast.success("Thanks for subscribing! 💌");
+    const email = formData.get("email") as string;
+    subscribe.mutate(email);
     (e.target as HTMLFormElement).reset();
   };
 
@@ -87,8 +109,8 @@ const Footer = () => {
                 required
                 className="flex-1"
               />
-              <Button type="submit" className="bg-primary hover:bg-primary/90">
-                Subscribe
+              <Button type="submit" className="bg-primary hover:bg-primary/90" disabled={subscribe.isPending}>
+                {subscribe.isPending ? "..." : "Subscribe"}
               </Button>
             </form>
           </div>

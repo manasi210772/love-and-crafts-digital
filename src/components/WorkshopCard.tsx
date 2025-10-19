@@ -3,8 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 interface WorkshopCardProps {
+  id?: string;
   title: string;
   date: string;
   time: string;
@@ -15,6 +20,7 @@ interface WorkshopCardProps {
 }
 
 const WorkshopCard = ({
+  id,
   title,
   date,
   time,
@@ -23,9 +29,75 @@ const WorkshopCard = ({
   level,
   image,
 }: WorkshopCardProps) => {
-  const handleRegister = () => {
-    toast.success(`You've registered for ${title}! 🎨`);
-  };
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const { data: isRegistered } = useQuery({
+    queryKey: ["workshop-registration", id, user?.id],
+    queryFn: async () => {
+      if (!user || !id) return false;
+      const { data } = await supabase
+        .from("workshop_registrations")
+        .select("*")
+        .eq("workshop_id", id)
+        .eq("user_id", user.id)
+        .maybeSingle();
+      return !!data;
+    },
+    enabled: !!user && !!id,
+  });
+
+  const register = useMutation({
+    mutationFn: async () => {
+      if (!user) {
+        navigate("/auth");
+        return;
+      }
+
+      if (!id) {
+        toast.error("Workshop not available");
+        return;
+      }
+
+      const { error } = await supabase
+        .from("workshop_registrations")
+        .insert({
+          workshop_id: id,
+          user_id: user.id,
+        });
+      
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["workshop-registration"] });
+      toast.success(`You've registered for ${title}! 🎨`);
+    },
+    onError: (error: any) => {
+      if (error.message.includes("duplicate")) {
+        toast.error("You're already registered for this workshop");
+      } else {
+        toast.error("Failed to register for workshop");
+      }
+    },
+  });
+
+  const unregister = useMutation({
+    mutationFn: async () => {
+      if (!user || !id) return;
+      const { error } = await supabase
+        .from("workshop_registrations")
+        .delete()
+        .eq("workshop_id", id)
+        .eq("user_id", user.id);
+      
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["workshop-registration"] });
+      toast.success("Registration cancelled");
+    },
+  });
 
   const levelColors = {
     Beginner: "bg-accent text-accent-foreground",
@@ -64,12 +136,24 @@ const WorkshopCard = ({
         </div>
       </CardContent>
       <CardFooter className="p-6 pt-0">
-        <Button
-          onClick={handleRegister}
-          className="w-full bg-primary hover:bg-primary/90"
-        >
-          Register Now
-        </Button>
+        {isRegistered ? (
+          <Button
+            onClick={() => unregister.mutate()}
+            disabled={unregister.isPending}
+            variant="outline"
+            className="w-full"
+          >
+            {unregister.isPending ? "Cancelling..." : "Cancel Registration"}
+          </Button>
+        ) : (
+          <Button
+            onClick={() => register.mutate()}
+            disabled={register.isPending}
+            className="w-full bg-primary hover:bg-primary/90"
+          >
+            {register.isPending ? "Registering..." : "Register Now"}
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );

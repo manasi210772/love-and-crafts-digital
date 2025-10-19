@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Heart, Menu, X } from "lucide-react";
+import { Heart, Menu, X, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
+import CartButton from "./CartButton";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,7 +50,7 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-4">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
@@ -70,6 +73,32 @@ const Navbar = () => {
                 />
               </Link>
             ))}
+            
+            {user && <CartButton />}
+            
+            {user ? (
+              <div className="flex items-center gap-2">
+                <Link to="/orders">
+                  <Button variant="ghost" size="icon" className={!isScrolled ? "text-white hover:bg-white/10" : ""}>
+                    <User className="h-5 w-5" />
+                  </Button>
+                </Link>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={signOut}
+                  className={!isScrolled ? "text-white hover:bg-white/10" : ""}
+                >
+                  <LogOut className="h-5 w-5" />
+                </Button>
+              </div>
+            ) : (
+              <Link to="/auth">
+                <Button variant={isScrolled ? "default" : "secondary"}>
+                  Sign In
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -101,6 +130,22 @@ const Navbar = () => {
                   {link.name}
                 </Link>
               ))}
+              {user ? (
+                <>
+                  <Link to="/orders" onClick={() => setIsOpen(false)}>
+                    <Button variant="outline" className="w-full">
+                      My Orders
+                    </Button>
+                  </Link>
+                  <Button variant="outline" onClick={() => { signOut(); setIsOpen(false); }} className="w-full">
+                    Sign Out
+                  </Button>
+                </>
+              ) : (
+                <Link to="/auth" onClick={() => setIsOpen(false)}>
+                  <Button className="w-full">Sign In</Button>
+                </Link>
+              )}
             </div>
           </div>
         )}

@@ -1,5 +1,6 @@
 import WorkshopCard from "@/components/WorkshopCard";
 import workshopImage from "@/assets/workshop-scene.jpg";
+import paperQuillingImg from "@/assets/paper-quilling.jpg";
 
 const Workshops = () => {
   const upcomingWorkshops = [
@@ -37,7 +38,7 @@ const Workshops = () => {
       instructor: "Lisa Johnson",
       description: "Learn the ancient art of paper quilling and create stunning designs",
       level: "Intermediate" as const,
-      image: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=800",
+      image: paperQuillingImg,
     },
     {
       title: "Candle Making Workshop",

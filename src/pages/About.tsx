@@ -26,16 +26,25 @@ const About = () => {
   ];
 
   return (
-    <div className="pt-24 pb-16 animate-fade-in">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Hero Section */}
-        <div className="text-center mb-16">
-          <h1 className="font-display text-5xl font-bold mb-6">Our Story</h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+    <div className="animate-fade-in">
+      {/* Hero Section */}
+      <section className="relative h-[400px] flex items-center justify-center overflow-hidden bg-gradient-warm">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,white_0%,transparent_50%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,white_0%,transparent_50%)]" />
+        </div>
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+          <h1 className="font-display text-5xl lg:text-6xl font-bold mb-6 text-white drop-shadow-lg">
+            Our Story
+          </h1>
+          <p className="text-lg lg:text-xl text-white/95 max-w-3xl mx-auto leading-relaxed">
             Crafted with Love was born from a simple belief: that handmade items carry a special 
             kind of magic that mass-produced goods simply cannot match.
           </p>
         </div>
+      </section>
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-16">
 
         {/* Story Section */}
         <section className="grid md:grid-cols-2 gap-12 items-center mb-20">

@@ -92,15 +92,27 @@ const Shop = () => {
   });
 
   return (
-    <div className="pt-24 pb-16 animate-fade-in">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="font-display text-5xl font-bold text-center mb-4">Our Handmade Shop</h1>
-        <p className="text-center text-muted-foreground text-lg mb-12 max-w-2xl mx-auto">
-          Every piece is lovingly crafted by talented artisans. Find your perfect handmade treasure.
-        </p>
+    <div className="animate-fade-in">
+      {/* Hero Section */}
+      <section className="relative h-[400px] flex items-center justify-center overflow-hidden bg-gradient-soft">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,hsl(var(--primary))_0%,transparent_50%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,hsl(var(--accent))_0%,transparent_50%)]" />
+        </div>
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+          <h1 className="font-display text-5xl lg:text-6xl font-bold mb-4 text-foreground">
+            Our Handmade Shop
+          </h1>
+          <p className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto">
+            Every piece is lovingly crafted by talented artisans. Find your perfect handmade treasure.
+          </p>
+        </div>
+      </section>
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-16">
 
         {/* Search and Filter */}
-        <div className="mb-12 space-y-6">
+        <div className="mb-16 space-y-6">
           <div className="relative max-w-xl mx-auto">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
             <Input

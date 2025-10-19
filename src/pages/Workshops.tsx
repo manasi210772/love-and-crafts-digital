@@ -67,16 +67,29 @@ const Workshops = () => {
   ];
 
   return (
-    <div className="pt-24 pb-16 animate-fade-in">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="font-display text-5xl font-bold mb-4">Weekend Workshops</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+    <div className="animate-fade-in">
+      {/* Hero Section */}
+      <section
+        className="relative h-[400px] flex items-center justify-center overflow-hidden"
+        style={{
+          backgroundImage: `url(${workshopImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-background" />
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+          <h1 className="font-display text-5xl lg:text-6xl font-bold mb-4 text-white drop-shadow-lg">
+            Weekend Workshops
+          </h1>
+          <p className="text-lg lg:text-xl text-white/95 max-w-2xl mx-auto">
             Join our creative community and learn new crafting techniques every weekend. 
             All materials included, all skill levels welcome!
           </p>
         </div>
+      </section>
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-16">
 
         {/* Upcoming Workshops */}
         <section className="mb-20">

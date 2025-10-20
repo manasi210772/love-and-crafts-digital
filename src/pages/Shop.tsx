@@ -3,93 +3,33 @@ import ProductCard from "@/components/ProductCard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
-import greetingCardsImg from "@/assets/products/greeting-cards.jpg";
-import candlesImg from "@/assets/products/candles.jpg";
-import potteryBowlImg from "@/assets/products/pottery-bowl.jpg";
-import silverNecklaceImg from "@/assets/products/silver-necklace.jpg";
-import embroideryImg from "@/assets/products/embroidery.jpg";
-import paperFlowersImg from "@/assets/products/paper-flowers.jpg";
-import ceramicMugsImg from "@/assets/products/ceramic-mugs.jpg";
-import braceletImg from "@/assets/products/bracelet.jpg";
-import crossStitchImg from "@/assets/products/cross-stitch.jpg";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const Shop = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
+  const { data: products, isLoading } = useQuery({
+    queryKey: ["products"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .order("name");
+      
+      if (error) throw error;
+      return data || [];
+    },
+  });
+
   const categories = ["All", "Paper Crafts", "Clay Art", "Jewelry", "Embroidery", "Home Decor"];
 
-  const products = [
-    {
-      name: "Watercolor Greeting Cards",
-      price: 12.99,
-      description: "Hand-painted cards perfect for any occasion",
-      image: greetingCardsImg,
-      category: "Paper Crafts",
-    },
-    {
-      name: "Lavender Soy Candles",
-      price: 18.99,
-      description: "Hand-poured candles with natural essential oils",
-      image: candlesImg,
-      category: "Home Decor",
-    },
-    {
-      name: "Clay Pottery Bowl",
-      price: 34.99,
-      description: "Handcrafted ceramic bowl with unique glaze",
-      image: potteryBowlImg,
-      category: "Clay Art",
-    },
-    {
-      name: "Handmade Silver Necklace",
-      price: 45.99,
-      description: "Elegant sterling silver pendant with gemstone",
-      image: silverNecklaceImg,
-      category: "Jewelry",
-    },
-    {
-      name: "Embroidered Wall Art",
-      price: 28.99,
-      description: "Colorful floral design on natural linen",
-      image: embroideryImg,
-      category: "Embroidery",
-    },
-    {
-      name: "Paper Flower Bouquet",
-      price: 22.99,
-      description: "Everlasting paper flowers in vibrant colors",
-      image: paperFlowersImg,
-      category: "Paper Crafts",
-    },
-    {
-      name: "Ceramic Mug Set",
-      price: 38.99,
-      description: "Set of 4 hand-thrown mugs with unique patterns",
-      image: ceramicMugsImg,
-      category: "Clay Art",
-    },
-    {
-      name: "Beaded Bracelet",
-      price: 16.99,
-      description: "Handwoven bracelet with natural stones",
-      image: braceletImg,
-      category: "Jewelry",
-    },
-    {
-      name: "Cross-Stitch Kit",
-      price: 24.99,
-      description: "Complete kit with pattern, thread, and fabric",
-      image: crossStitchImg,
-      category: "Embroidery",
-    },
-  ];
-
-  const filteredProducts = products.filter((product) => {
+  const filteredProducts = products?.filter((product) => {
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
     return matchesSearch && matchesCategory;
-  });
+  }) || [];
 
   return (
     <div className="animate-fade-in">
@@ -143,24 +83,37 @@ const Shop = () => {
         </div>
 
         {/* Products Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProducts.map((product, index) => (
-            <div
-              key={index}
-              className="animate-slide-up"
-              style={{ animationDelay: `${index * 0.05}s` }}
-            >
-              <ProductCard {...product} />
+        {isLoading ? (
+          <div className="text-center py-16">Loading products...</div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredProducts.map((product, index) => (
+                <div
+                  key={product.id}
+                  className="animate-slide-up"
+                  style={{ animationDelay: `${index * 0.05}s` }}
+                >
+                  <ProductCard 
+                    id={product.id}
+                    name={product.name}
+                    price={product.price}
+                    description={product.description}
+                    image={product.image_url}
+                    category={product.category}
+                  />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
 
-        {filteredProducts.length === 0 && (
-          <div className="text-center py-16">
-            <p className="text-muted-foreground text-lg">
-              No products found. Try a different search or category.
-            </p>
-          </div>
+            {filteredProducts.length === 0 && (
+              <div className="text-center py-16">
+                <p className="text-muted-foreground text-lg">
+                  No products found. Try a different search or category.
+                </p>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

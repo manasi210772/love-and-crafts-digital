@@ -5,6 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import braceletImg from "@/assets/products/bracelet.jpg";
+import candlesImg from "@/assets/products/candles.jpg";
+import ceramicMugsImg from "@/assets/products/ceramic-mugs.jpg";
+import crossStitchImg from "@/assets/products/cross-stitch.jpg";
+import embroideryImg from "@/assets/products/embroidery.jpg";
+import paperFlowersImg from "@/assets/products/paper-flowers.jpg";
+import potteryBowlImg from "@/assets/products/pottery-bowl.jpg";
+import silverNecklaceImg from "@/assets/products/silver-necklace.jpg";
 
 const Shop = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -22,6 +30,18 @@ const Shop = () => {
       return data || [];
     },
   });
+
+  // Map product names to their imported images
+  const productImages: Record<string, string> = {
+    "Beaded Bracelet": braceletImg,
+    "Lavender Soy Candles": candlesImg,
+    "Ceramic Mug Set": ceramicMugsImg,
+    "Cross-Stitch Kit": crossStitchImg,
+    "Embroidered Wall Art": embroideryImg,
+    "Paper Flower Bouquet": paperFlowersImg,
+    "Clay Pottery Bowl": potteryBowlImg,
+    "Handmade Silver Necklace": silverNecklaceImg,
+  };
 
   const categories = ["All", "Paper Crafts", "Clay Art", "Jewelry", "Embroidery", "Home Decor"];
 
@@ -87,7 +107,7 @@ const Shop = () => {
           <div className="text-center py-16">Loading products...</div>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {filteredProducts.map((product, index) => (
                 <div
                   key={product.id}
@@ -99,7 +119,7 @@ const Shop = () => {
                     name={product.name}
                     price={product.price}
                     description={product.description}
-                    image={product.image_url}
+                    image={productImages[product.name] || product.image_url}
                     category={product.category}
                   />
                 </div>

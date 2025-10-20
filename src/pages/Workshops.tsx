@@ -1,6 +1,12 @@
 import WorkshopCard from "@/components/WorkshopCard";
 import workshopImage from "@/assets/workshop-scene.jpg";
 import paperQuillingImg from "@/assets/paper-quilling.jpg";
+import mandalaArt from "@/assets/mandala-art.jpg";
+import resinArt from "@/assets/resin-art.jpg";
+import canvasPainting from "@/assets/canvas-painting.jpg";
+import embroideryWorkshopImg from "@/assets/embroidery-workshop.jpg";
+import polymerClayWorkshopImg from "@/assets/polymer-clay-workshop.jpg";
+import candleWorkshopImg from "@/assets/candle-workshop.jpg";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -18,11 +24,21 @@ const Workshops = () => {
     },
   });
 
+  // Map workshop titles to their imported images
+  const workshopImages: Record<string, string> = {
+    "Advanced Embroidery Techniques": embroideryWorkshopImg,
+    "Polymer Clay Jewelry Making": polymerClayWorkshopImg,
+    "Candle Making Workshop": candleWorkshopImg,
+    "Paper Quilling Art": paperQuillingImg,
+    "Pottery Wheel Throwing": "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=800",
+    "Watercolor Painting Basics": "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=800",
+  };
+
   const galleryImages = [
     "https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=800",
-    "https://images.unsplash.com/photo-1611652022419-a9419f74343a?w=800",
-    "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800",
-    "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=800",
+    mandalaArt,
+    resinArt,
+    canvasPainting,
   ];
 
   return (
@@ -71,7 +87,7 @@ const Workshops = () => {
                     instructor={workshop.instructor}
                     description={workshop.description}
                     level={workshop.level as "Beginner" | "Intermediate" | "Advanced"}
-                    image={workshop.image_url}
+                    image={workshopImages[workshop.title] || workshop.image_url}
                   />
                 </div>
               ))}

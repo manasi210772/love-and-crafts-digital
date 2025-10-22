@@ -1,5 +1,6 @@
 import { Heart, Users, Sparkles, Award } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import craftWorkshopImg from "@/assets/craft-workshop-team.jpg";
 
 const About = () => {
   const values = [
@@ -76,7 +77,7 @@ const About = () => {
             </div>
             <div className="absolute -bottom-6 -right-6 w-3/4 aspect-video rounded-2xl overflow-hidden border-4 border-background shadow-hover">
               <img
-                src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800"
+                src={craftWorkshopImg}
                 alt="Workshop scene"
                 className="w-full h-full object-cover"
               />

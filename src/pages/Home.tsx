@@ -4,21 +4,15 @@ import { ShoppingBag, Sparkles } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import WorkshopCard from "@/components/WorkshopCard";
 import heroImage from "@/assets/hero-crafts.jpg";
+import lavenderCandleImg from "@/assets/lavender-candle.jpg";
 
 const Home = () => {
   const featuredProducts = [
     {
-      name: "Watercolor Greeting Cards",
-      price: 12.99,
-      description: "Hand-painted cards perfect for any occasion",
-      image: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=800",
-      category: "Paper Crafts",
-    },
-    {
       name: "Lavender Soy Candles",
       price: 18.99,
       description: "Hand-poured candles with natural essential oils",
-      image: "https://images.unsplash.com/photo-1602874801006-95415c5babc0?w=800",
+      image: lavenderCandleImg,
       category: "Home Decor",
     },
     {
@@ -27,6 +21,13 @@ const Home = () => {
       description: "Handcrafted ceramic bowl with unique glaze",
       image: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=800",
       category: "Clay Art",
+    },
+    {
+      name: "Beaded Bracelet",
+      price: 24.99,
+      description: "Handmade beaded bracelet with natural stones",
+      image: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800",
+      category: "Jewelry",
     },
   ];
 

@@ -48,11 +48,13 @@ const Navbar = () => {
             <Heart className={`w-8 h-8 group-hover:fill-primary transition-all ${
               isScrolled ? "text-primary" : "text-white"
             }`} />
-            <span className={`text-2xl font-display font-bold transition-colors ${
-              isScrolled ? "text-foreground" : "text-white drop-shadow-lg"
-            }`}>
-              Crafted with Love
-            </span>
+            {location.pathname !== "/" && (
+              <span className={`text-2xl font-display font-bold transition-colors ${
+                isScrolled ? "text-foreground" : "text-white drop-shadow-lg"
+              }`}>
+                Crafted with Love
+              </span>
+            )}
           </Link>
 
           {/* Desktop Navigation */}

@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Package } from "lucide-react";
 
 const Orders = () => {
   const { user } = useAuth();
@@ -46,8 +47,38 @@ const Orders = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-16">
-      <h1 className="font-display text-4xl font-bold mb-8">My Orders</h1>
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <div className="relative bg-gradient-to-br from-primary/10 via-background to-accent/10 py-16 mb-12">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/5" />
+        <div className="container mx-auto px-4 relative">
+          <div className="max-w-3xl mx-auto text-center animate-fade-in">
+            <div className="mb-6 flex justify-center">
+              <div className="relative">
+                <Package className="h-16 w-16 text-primary" />
+                <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full" />
+              </div>
+            </div>
+            
+            <h1 className="font-display text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+              My Orders
+            </h1>
+            
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Track your handcrafted treasures and review your purchase history
+            </p>
+
+            {/* Decorative line */}
+            <div className="flex justify-center gap-2 mt-6">
+              <div className="h-1 w-12 bg-gradient-to-r from-transparent via-primary to-transparent rounded-full" />
+              <div className="h-1 w-12 bg-gradient-to-r from-transparent via-accent to-transparent rounded-full" />
+              <div className="h-1 w-12 bg-gradient-to-r from-transparent via-primary to-transparent rounded-full" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 pb-16">
       
       {!orders || orders.length === 0 ? (
         <div className="text-center py-16">
@@ -101,6 +132,7 @@ const Orders = () => {
           ))}
         </div>
       )}
+      </div>
     </div>
   );
 };

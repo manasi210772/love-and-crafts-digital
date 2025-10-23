@@ -4,6 +4,12 @@ import { Heart, Menu, X, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import CartButton from "./CartButton";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -74,31 +80,59 @@ const Navbar = () => {
               </Link>
             ))}
             
-            {user && <CartButton />}
-            
-            {user ? (
-              <div className="flex items-center gap-2">
-                <Link to="/orders">
-                  <Button variant="ghost" size="icon" className={!isScrolled ? "text-white hover:bg-white/10" : ""}>
-                    <User className="h-5 w-5" />
+            <TooltipProvider>
+              {user && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div>
+                      <CartButton />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Shopping Cart</p>
+                  </TooltipContent>
+                </Tooltip>
+              )}
+              
+              {user ? (
+                <div className="flex items-center gap-2">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link to="/orders">
+                        <Button variant="ghost" size="icon" className={!isScrolled ? "text-white hover:bg-white/10" : ""}>
+                          <User className="h-5 w-5" />
+                        </Button>
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>My Orders</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        onClick={signOut}
+                        className={!isScrolled ? "text-white hover:bg-white/10" : ""}
+                      >
+                        <LogOut className="h-5 w-5" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Sign Out</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+              ) : (
+                <Link to="/auth">
+                  <Button variant={isScrolled ? "default" : "secondary"}>
+                    Sign In
                   </Button>
                 </Link>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  onClick={signOut}
-                  className={!isScrolled ? "text-white hover:bg-white/10" : ""}
-                >
-                  <LogOut className="h-5 w-5" />
-                </Button>
-              </div>
-            ) : (
-              <Link to="/auth">
-                <Button variant={isScrolled ? "default" : "secondary"}>
-                  Sign In
-                </Button>
-              </Link>
-            )}
+              )}
+            </TooltipProvider>
           </div>
 
           {/* Mobile Menu Button */}

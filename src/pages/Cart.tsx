@@ -1,11 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Trash2, Plus, Minus } from "lucide-react";
-import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const Cart = () => {
   const { user } = useAuth();
@@ -135,8 +135,38 @@ const Cart = () => {
   ) || 0;
 
   return (
-    <div className="container mx-auto px-4 py-16">
-      <h1 className="font-display text-4xl font-bold mb-8">Shopping Cart</h1>
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <div className="relative bg-gradient-to-br from-accent/10 via-background to-primary/10 py-16 mb-12">
+        <div className="absolute inset-0 bg-gradient-to-r from-accent/5 via-transparent to-primary/5" />
+        <div className="container mx-auto px-4 relative">
+          <div className="max-w-3xl mx-auto text-center animate-fade-in">
+            <div className="mb-6 flex justify-center">
+              <div className="relative">
+                <ShoppingBag className="h-16 w-16 text-primary" />
+                <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full" />
+              </div>
+            </div>
+            
+            <h1 className="font-display text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-accent via-primary to-accent bg-clip-text text-transparent">
+              Shopping Cart
+            </h1>
+            
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Your selected craft items are waiting to be yours
+            </p>
+
+            {/* Decorative line */}
+            <div className="flex justify-center gap-2 mt-6">
+              <div className="h-1 w-12 bg-gradient-to-r from-transparent via-accent to-transparent rounded-full" />
+              <div className="h-1 w-12 bg-gradient-to-r from-transparent via-primary to-transparent rounded-full" />
+              <div className="h-1 w-12 bg-gradient-to-r from-transparent via-accent to-transparent rounded-full" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 pb-16">
       
       {!cartItems || cartItems.length === 0 ? (
         <div className="text-center py-16">
@@ -226,6 +256,7 @@ const Cart = () => {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 };

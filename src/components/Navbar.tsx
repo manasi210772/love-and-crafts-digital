@@ -149,37 +149,47 @@ const Navbar = () => {
         {/* Mobile Navigation */}
         {isOpen && (
           <div className="md:hidden pb-6 animate-fade-in">
-            <div className="flex flex-col space-y-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  onClick={() => setIsOpen(false)}
-                  className={`font-medium py-2 px-4 rounded-lg transition-colors ${
-                    isActive(link.path)
-                      ? "bg-primary text-primary-foreground"
-                      : "text-foreground hover:bg-secondary"
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              ))}
-              {user ? (
-                <>
-                  <Link to="/orders" onClick={() => setIsOpen(false)}>
-                    <Button variant="outline" className="w-full">
-                      My Orders
-                    </Button>
+            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 via-card to-secondary/20 backdrop-blur-md border border-primary/20 shadow-lg p-6 mt-4">
+              {/* Decorative background elements */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+              <div className="absolute bottom-0 left-0 w-24 h-24 bg-secondary/10 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2" />
+              
+              <div className="relative flex flex-col space-y-4">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    onClick={() => setIsOpen(false)}
+                    className={`font-medium py-3 px-4 rounded-lg transition-all duration-300 ${
+                      isActive(link.path)
+                        ? "bg-primary text-primary-foreground shadow-md transform scale-105"
+                        : "text-foreground hover:bg-secondary/50 hover:shadow-sm hover:transform hover:scale-102"
+                    }`}
+                  >
+                    {link.name}
                   </Link>
-                  <Button variant="outline" onClick={() => { signOut(); setIsOpen(false); }} className="w-full">
-                    Sign Out
-                  </Button>
-                </>
-              ) : (
-                <Link to="/auth" onClick={() => setIsOpen(false)}>
-                  <Button className="w-full">Sign In</Button>
-                </Link>
-              )}
+                ))}
+                {user ? (
+                  <>
+                    <Link to="/orders" onClick={() => setIsOpen(false)}>
+                      <Button variant="outline" className="w-full bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-all">
+                        My Orders
+                      </Button>
+                    </Link>
+                    <Button 
+                      variant="outline" 
+                      onClick={() => { signOut(); setIsOpen(false); }} 
+                      className="w-full bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-all"
+                    >
+                      Sign Out
+                    </Button>
+                  </>
+                ) : (
+                  <Link to="/auth" onClick={() => setIsOpen(false)}>
+                    <Button className="w-full shadow-md hover:shadow-lg transition-all">Sign In</Button>
+                  </Link>
+                )}
+              </div>
             </div>
           </div>
         )}

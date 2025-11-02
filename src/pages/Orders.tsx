@@ -60,7 +60,7 @@ const Orders = () => {
               </div>
             </div>
             
-            <h1 className="font-display text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+            <h1 className="font-display text-5xl md:text-6xl font-bold mb-4 pb-2 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
               My Orders
             </h1>
             
@@ -92,7 +92,7 @@ const Orders = () => {
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <div>
-                    <CardTitle className="text-xl">
+                    <CardTitle className="text-xl font-normal">
                       Order #{order.id.slice(0, 8)}
                     </CardTitle>
                     <p className="text-sm text-muted-foreground">

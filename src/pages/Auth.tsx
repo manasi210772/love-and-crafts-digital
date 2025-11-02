@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { toast } from "sonner";
 import { User } from "@supabase/supabase-js";
 import { z } from "zod";
+import { Heart } from "lucide-react";
 
 // Validation schemas
 const emailSchema = z
@@ -171,7 +172,18 @@ const Auth = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-soft px-4">
       <Card className="w-full max-w-md">
-        <CardHeader>
+        <CardHeader className="text-center">
+          <div className="flex justify-center mb-4">
+            <div className="relative">
+              <Heart className="h-12 w-12 text-primary fill-primary" />
+              <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full" />
+            </div>
+          </div>
+          <div className="mb-2">
+            <span className="text-2xl font-display font-bold text-foreground">
+              Crafting with Love
+            </span>
+          </div>
           <CardTitle className="font-display text-3xl">
             {isLogin ? "Welcome Back" : "Create Account"}
           </CardTitle>

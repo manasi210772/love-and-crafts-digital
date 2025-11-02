@@ -58,29 +58,31 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-1">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`font-medium transition-colors relative group ${
+                className={`px-4 py-2 font-medium transition-colors relative group rounded-lg ${
                   isScrolled
                     ? isActive(link.path)
-                      ? "text-primary"
-                      : "text-foreground hover:text-primary"
+                      ? "text-primary bg-primary/10"
+                      : "text-foreground hover:text-primary hover:bg-accent/50"
                     : isActive(link.path)
-                      ? "text-white font-bold"
-                      : "text-white/90 hover:text-white"
+                      ? "text-white font-bold bg-white/10"
+                      : "text-white/90 hover:text-white hover:bg-white/10"
                 }`}
               >
                 {link.name}
                 <span
-                  className={`absolute -bottom-1 left-0 w-full h-0.5 bg-primary transition-transform origin-left ${
+                  className={`absolute -bottom-1 left-4 right-4 h-0.5 bg-primary transition-transform origin-left ${
                     isActive(link.path) ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
                   }`}
                 />
               </Link>
             ))}
+            
+            <div className="h-6 w-px bg-border/50 mx-2" />
             
             <TooltipProvider>
               {user && (
@@ -97,11 +99,15 @@ const Navbar = () => {
               )}
               
               {user ? (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1 ml-1">
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Link to="/orders">
-                        <Button variant="ghost" size="icon" className={!isScrolled ? "text-white hover:bg-white/10" : ""}>
+                        <Button 
+                          variant="ghost" 
+                          size="icon"
+                          className={`h-10 w-10 ${!isScrolled ? "text-white hover:bg-white/10" : "hover:bg-accent"}`}
+                        >
                           <User className="h-5 w-5" />
                         </Button>
                       </Link>
@@ -115,9 +121,9 @@ const Navbar = () => {
                     <TooltipTrigger asChild>
                       <Button 
                         variant="ghost" 
-                        size="icon" 
+                        size="icon"
                         onClick={signOut}
-                        className={!isScrolled ? "text-white hover:bg-white/10" : ""}
+                        className={`h-10 w-10 ${!isScrolled ? "text-white hover:bg-white/10" : "hover:bg-accent"}`}
                       >
                         <LogOut className="h-5 w-5" />
                       </Button>
@@ -128,8 +134,8 @@ const Navbar = () => {
                   </Tooltip>
                 </div>
               ) : (
-                <Link to="/auth">
-                  <Button variant={isScrolled ? "default" : "secondary"}>
+                <Link to="/auth" className="ml-2">
+                  <Button variant={isScrolled ? "default" : "secondary"} size="sm" className="h-10">
                     Sign In
                   </Button>
                 </Link>

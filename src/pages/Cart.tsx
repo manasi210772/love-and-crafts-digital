@@ -76,43 +76,70 @@ const Cart = () => {
         0
       );
 
-      const { data: order, error: orderError } = await supabase
-        .from("orders")
-        .insert({
-          user_id: user.id,
-          total_amount: total,
-          status: "pending",
-        })
-        .select()
-        .single();
+      // Create Razorpay order
+      const { data: orderData, error: orderError } = await supabase.functions.invoke(
+        'create-razorpay-order',
+        {
+          body: {
+            amount: total,
+            currency: 'INR',
+            receipt: `receipt_${Date.now()}`,
+          },
+        }
+      );
 
       if (orderError) throw orderError;
 
-      const orderItems = cartItems.map((item) => ({
-        order_id: order.id,
-        product_id: item.product_id,
-        quantity: item.quantity,
-        price_at_purchase: item.products?.price || 0,
-      }));
+      // Initialize Razorpay checkout
+      const options = {
+        key: orderData.key,
+        amount: orderData.amount,
+        currency: orderData.currency,
+        name: 'Crafted with Love',
+        description: 'Purchase handmade crafts',
+        order_id: orderData.orderId,
+        handler: async function (response: any) {
+          try {
+            // Verify payment
+            const { data: verifyData, error: verifyError } = await supabase.functions.invoke(
+              'verify-razorpay-payment',
+              {
+                body: {
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature,
+                  userId: user.id,
+                  totalAmount: total,
+                },
+              }
+            );
 
-      const { error: itemsError } = await supabase
-        .from("order_items")
-        .insert(orderItems);
+            if (verifyError) throw verifyError;
 
-      if (itemsError) throw itemsError;
+            queryClient.invalidateQueries({ queryKey: ["cart"] });
+            queryClient.invalidateQueries({ queryKey: ["cart-count"] });
+            toast.success("Payment successful! Order placed.");
+            navigate("/orders");
+          } catch (error) {
+            toast.error("Payment verification failed");
+            console.error(error);
+          }
+        },
+        prefill: {
+          email: user.email,
+        },
+        theme: {
+          color: '#8B5CF6',
+        },
+      };
 
-      const { error: clearError } = await supabase
-        .from("cart_items")
-        .delete()
-        .eq("user_id", user.id);
-
-      if (clearError) throw clearError;
+      // @ts-ignore
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
-      queryClient.invalidateQueries({ queryKey: ["cart-count"] });
-      toast.success("Order placed successfully!");
-      navigate("/orders");
+    onError: (error) => {
+      toast.error("Failed to initiate payment");
+      console.error(error);
     },
   });
 

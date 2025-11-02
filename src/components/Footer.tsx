@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
-import { Heart, Instagram, Youtube, Mail } from "lucide-react";
+import { Heart, Instagram, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { z } from "zod";
+
+const emailSchema = z.string().email("Please enter a valid email address").trim().toLowerCase();
 
 const Footer = () => {
   const subscribe = useMutation({
@@ -31,7 +34,14 @@ const Footer = () => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const email = formData.get("email") as string;
-    subscribe.mutate(email);
+    
+    const validation = emailSchema.safeParse(email);
+    if (!validation.success) {
+      toast.error(validation.error.errors[0].message);
+      return;
+    }
+    
+    subscribe.mutate(validation.data);
     (e.target as HTMLFormElement).reset();
   };
 

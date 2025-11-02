@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Heart, Menu, X, User, LogOut } from "lucide-react";
+import { Heart, Menu, X, User, LogOut, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import CartButton from "./CartButton";
@@ -100,6 +100,23 @@ const Navbar = () => {
               
               {user ? (
                 <div className="flex items-center gap-1 ml-1">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link to="/my-workshops">
+                        <Button 
+                          variant="ghost" 
+                          size="icon"
+                          className={`h-10 w-10 ${!isScrolled ? "text-white hover:bg-white/10" : "hover:bg-accent"}`}
+                        >
+                          <Calendar className="h-5 w-5" />
+                        </Button>
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>My Workshops</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Link to="/orders">

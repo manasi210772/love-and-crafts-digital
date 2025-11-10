@@ -47,33 +47,26 @@ const Orders = () => {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen pt-20">
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-primary/10 via-background to-accent/10 py-16 mb-12">
+      <div className="relative bg-gradient-to-br from-primary/10 via-background to-accent/10 py-12 mb-12">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/5" />
         <div className="container mx-auto px-4 relative">
           <div className="max-w-3xl mx-auto text-center animate-fade-in">
-            <div className="mb-6 flex justify-center">
+            <div className="mb-4 flex justify-center">
               <div className="relative">
-                <Package className="h-16 w-16 text-primary" />
+                <Package className="h-12 w-12 text-primary" />
                 <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full" />
               </div>
             </div>
             
-            <h1 className="font-display text-5xl md:text-6xl font-bold mb-4 pb-2 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+            <h1 className="font-display text-4xl md:text-5xl font-bold mb-3 text-foreground">
               My Orders
             </h1>
             
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base text-muted-foreground max-w-2xl mx-auto">
               Track your handcrafted treasures and review your purchase history
             </p>
-
-            {/* Decorative line */}
-            <div className="flex justify-center gap-2 mt-6">
-              <div className="h-1 w-12 bg-gradient-to-r from-transparent via-primary to-transparent rounded-full" />
-              <div className="h-1 w-12 bg-gradient-to-r from-transparent via-accent to-transparent rounded-full" />
-              <div className="h-1 w-12 bg-gradient-to-r from-transparent via-primary to-transparent rounded-full" />
-            </div>
           </div>
         </div>
       </div>

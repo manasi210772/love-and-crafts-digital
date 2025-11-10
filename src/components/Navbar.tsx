@@ -98,7 +98,7 @@ const Navbar = () => {
                         <Button 
                           variant="ghost" 
                           size="icon"
-                          className="h-10 w-10 hover:bg-accent"
+                          className="h-10 w-10 hover:bg-accent hover:text-accent-foreground"
                         >
                           <Calendar className="h-5 w-5" />
                         </Button>
@@ -115,7 +115,7 @@ const Navbar = () => {
                         <Button 
                           variant="ghost" 
                           size="icon"
-                          className="h-10 w-10 hover:bg-accent"
+                          className="h-10 w-10 hover:bg-accent hover:text-accent-foreground"
                         >
                           <User className="h-5 w-5" />
                         </Button>
@@ -132,7 +132,7 @@ const Navbar = () => {
                         variant="ghost" 
                         size="icon"
                         onClick={signOut}
-                        className="h-10 w-10 hover:bg-accent"
+                        className="h-10 w-10 hover:bg-accent hover:text-accent-foreground"
                       >
                         <LogOut className="h-5 w-5" />
                       </Button>

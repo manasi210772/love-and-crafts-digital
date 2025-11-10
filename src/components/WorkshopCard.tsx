@@ -71,6 +71,7 @@ const WorkshopCard = ({
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["workshop-registration"] });
+      queryClient.invalidateQueries({ queryKey: ["my-workshops"] });
       toast.success(`You've registered for ${title}! 🎨`);
     },
     onError: (error: any) => {
@@ -95,6 +96,7 @@ const WorkshopCard = ({
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["workshop-registration"] });
+      queryClient.invalidateQueries({ queryKey: ["my-workshops"] });
       toast.success("Registration cancelled");
     },
   });

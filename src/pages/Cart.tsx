@@ -76,6 +76,14 @@ const Cart = () => {
         0
       );
 
+      // Check if Razorpay is loaded
+      // @ts-ignore
+      if (!window.Razorpay) {
+        throw new Error("Razorpay SDK not loaded. Please refresh the page.");
+      }
+
+      console.log("Creating Razorpay order for amount:", total);
+
       // Create Razorpay order
       const { data: orderData, error: orderError } = await supabase.functions.invoke(
         'create-razorpay-order',
@@ -88,7 +96,12 @@ const Cart = () => {
         }
       );
 
-      if (orderError) throw orderError;
+      if (orderError) {
+        console.error("Razorpay order creation error:", orderError);
+        throw orderError;
+      }
+
+      console.log("Razorpay order created:", orderData);
 
       // Initialize Razorpay checkout
       const options = {
@@ -137,9 +150,9 @@ const Cart = () => {
       const razorpay = new window.Razorpay(options);
       razorpay.open();
     },
-    onError: (error) => {
-      toast.error("Failed to initiate payment");
-      console.error(error);
+    onError: (error: any) => {
+      console.error("Checkout error:", error);
+      toast.error(error.message || "Failed to initiate payment");
     },
   });
 

@@ -37,21 +37,17 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-card/95 backdrop-blur-md shadow-soft" : "bg-transparent"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
+        isScrolled ? "bg-background/95 backdrop-blur-md shadow-sm border-border" : "bg-background/90 backdrop-blur-sm border-border/50"
       }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 group">
-            <Heart className={`w-8 h-8 group-hover:fill-primary transition-all ${
-              isScrolled ? "text-primary" : "text-white"
-            }`} />
+            <Heart className="w-8 h-8 text-primary group-hover:fill-primary transition-all" />
             {location.pathname !== "/" && (
-              <span className={`text-2xl font-display font-bold transition-colors ${
-                isScrolled ? "text-foreground" : "text-white drop-shadow-lg"
-              }`}>
+              <span className="text-2xl font-display font-bold text-foreground transition-colors">
                 Crafted with Love
               </span>
             )}
@@ -64,13 +60,9 @@ const Navbar = () => {
                 key={link.path}
                 to={link.path}
                 className={`px-4 py-2 font-medium transition-colors relative group rounded-lg ${
-                  isScrolled
-                    ? isActive(link.path)
-                      ? "text-primary bg-primary/10"
-                      : "text-foreground hover:text-primary hover:bg-accent/50"
-                    : isActive(link.path)
-                      ? "text-white font-bold bg-white/10"
-                      : "text-white/90 hover:text-white hover:bg-white/10"
+                  isActive(link.path)
+                    ? "text-primary bg-primary/10"
+                    : "text-foreground hover:text-primary hover:bg-accent/50"
                 }`}
               >
                 {link.name}
@@ -106,7 +98,7 @@ const Navbar = () => {
                         <Button 
                           variant="ghost" 
                           size="icon"
-                          className={`h-10 w-10 ${!isScrolled ? "text-white hover:bg-white/10" : "hover:bg-accent"}`}
+                          className="h-10 w-10 hover:bg-accent"
                         >
                           <Calendar className="h-5 w-5" />
                         </Button>
@@ -123,7 +115,7 @@ const Navbar = () => {
                         <Button 
                           variant="ghost" 
                           size="icon"
-                          className={`h-10 w-10 ${!isScrolled ? "text-white hover:bg-white/10" : "hover:bg-accent"}`}
+                          className="h-10 w-10 hover:bg-accent"
                         >
                           <User className="h-5 w-5" />
                         </Button>
@@ -140,7 +132,7 @@ const Navbar = () => {
                         variant="ghost" 
                         size="icon"
                         onClick={signOut}
-                        className={`h-10 w-10 ${!isScrolled ? "text-white hover:bg-white/10" : "hover:bg-accent"}`}
+                        className="h-10 w-10 hover:bg-accent"
                       >
                         <LogOut className="h-5 w-5" />
                       </Button>
@@ -152,7 +144,7 @@ const Navbar = () => {
                 </div>
               ) : (
                 <Link to="/auth" className="ml-2">
-                  <Button variant={isScrolled ? "default" : "secondary"} size="sm" className="h-10">
+                  <Button variant="default" size="sm" className="h-10">
                     Sign In
                   </Button>
                 </Link>
@@ -164,7 +156,7 @@ const Navbar = () => {
           <Button
             variant="ghost"
             size="icon"
-            className={`md:hidden ${!isScrolled && "text-white hover:bg-white/10"}`}
+            className="md:hidden"
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

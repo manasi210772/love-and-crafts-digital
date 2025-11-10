@@ -181,7 +181,7 @@ const Auth = () => {
           </div>
           <div className="mb-2">
             <span className="text-2xl font-display font-bold text-foreground">
-              Crafting with Love
+              Crafted with Love
             </span>
           </div>
           <CardTitle className="font-display text-3xl">

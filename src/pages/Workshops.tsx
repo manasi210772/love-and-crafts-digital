@@ -1,4 +1,6 @@
 import WorkshopCard from "@/components/WorkshopCard";
+import { WorkshopCardSkeleton } from "@/components/ui/skeleton-card";
+import SEO from "@/components/SEO";
 import workshopImage from "@/assets/workshop-scene.jpg";
 import paperQuillingImg from "@/assets/paper-quilling.jpg";
 import mandalaArt from "@/assets/mandala-art.jpg";
@@ -43,6 +45,11 @@ const Workshops = () => {
 
   return (
     <div className="animate-fade-in">
+      <SEO 
+        title="Weekend Workshops"
+        description="Join our creative workshops and learn new crafting techniques. All materials included, all skill levels welcome!"
+        keywords="craft workshops, art classes, pottery class, painting workshop, embroidery class, candle making"
+      />
       {/* Hero Section */}
       <section
         className="relative h-[400px] flex items-center justify-center overflow-hidden"
@@ -70,7 +77,11 @@ const Workshops = () => {
         <section className="mb-20">
           <h2 className="font-display text-4xl font-bold text-center mb-12">Upcoming Workshops</h2>
           {isLoading ? (
-            <div className="text-center py-16">Loading workshops...</div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {[1, 2, 3, 4].map((i) => (
+                <WorkshopCardSkeleton key={i} />
+              ))}
+            </div>
           ) : workshops && workshops.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {workshops.map((workshop, index) => (

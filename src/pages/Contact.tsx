@@ -1,10 +1,11 @@
-import { MapPin, Phone, Mail, Instagram, Youtube } from "lucide-react";
+import { MapPin, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
+import SEO from "@/components/SEO";
 const Contact = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -12,6 +13,11 @@ const Contact = () => {
     (e.target as HTMLFormElement).reset();
   };
   return <div className="animate-fade-in">
+      <SEO 
+        title="Contact Us"
+        description="Get in touch with Crafted with Love. Questions about products or workshops? We'd love to hear from you!"
+        keywords="contact, get in touch, customer support, craft shop contact, workshop inquiries"
+      />
       {/* Hero Section */}
       <section className="relative h-[400px] flex items-center justify-center overflow-hidden bg-gradient-warm">
         <div className="absolute inset-0 opacity-10">

@@ -1,6 +1,7 @@
 import { Heart, Users, Sparkles, Award } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import craftWorkshopImg from "@/assets/craft-workshop-team.jpg";
+import SEO from "@/components/SEO";
 
 const About = () => {
   const values = [
@@ -28,6 +29,11 @@ const About = () => {
 
   return (
     <div className="animate-fade-in">
+      <SEO 
+        title="About Us"
+        description="Learn about Crafted with Love - our story, mission, and commitment to handmade artistry. We connect hearts through handmade art."
+        keywords="about us, handmade crafts, artisan story, craft community, local artisans"
+      />
       {/* Hero Section */}
       <section className="relative h-[400px] flex items-center justify-center overflow-hidden bg-gradient-warm">
         <div className="absolute inset-0 opacity-10">

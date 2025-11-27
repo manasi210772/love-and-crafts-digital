@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Calendar, Clock, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -32,6 +33,7 @@ const WorkshopCard = ({
   const { user } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [imageError, setImageError] = useState(false);
 
   const { data: isRegistered } = useQuery({
     queryKey: ["workshop-registration", id, user?.id],
@@ -72,9 +74,9 @@ const WorkshopCard = ({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["workshop-registration"] });
       queryClient.invalidateQueries({ queryKey: ["my-workshops"] });
-      toast.success(`You've registered for ${title}! 🎨`);
+      toast.success(`You've registered for ${title}!`);
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       if (error.message.includes("duplicate")) {
         toast.error("You're already registered for this workshop");
       } else {
@@ -111,9 +113,11 @@ const WorkshopCard = ({
     <Card className="group overflow-hidden hover-lift border-border bg-card rounded-2xl">
       <div className="aspect-video overflow-hidden relative">
         <img
-          src={image}
+          src={imageError ? '/placeholder.svg' : image}
           alt={title}
+          loading="lazy"
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          onError={() => setImageError(true)}
         />
         <Badge className={`absolute top-4 right-4 ${levelColors[level]}`}>
           {level}

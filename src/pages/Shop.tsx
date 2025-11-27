@@ -1,10 +1,12 @@
 import { useState } from "react";
 import ProductCard from "@/components/ProductCard";
+import { ProductCardSkeleton } from "@/components/ui/skeleton-card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import SEO from "@/components/SEO";
 import braceletImg from "@/assets/products/bracelet.jpg";
 import candlesImg from "@/assets/products/candles.jpg";
 import ceramicMugsImg from "@/assets/products/ceramic-mugs.jpg";
@@ -53,6 +55,11 @@ const Shop = () => {
 
   return (
     <div className="animate-fade-in">
+      <SEO 
+        title="Shop Handmade Crafts"
+        description="Browse our collection of unique handmade crafts including jewelry, pottery, candles, and more. Each piece is lovingly crafted by talented artisans."
+        keywords="handmade shop, artisan crafts, handmade jewelry, pottery, candles, embroidery, paper crafts"
+      />
       {/* Hero Section */}
       <section className="relative h-[400px] flex items-center justify-center overflow-hidden bg-gradient-warm">
         <div className="absolute inset-0 opacity-10">
@@ -104,7 +111,11 @@ const Shop = () => {
 
         {/* Products Grid */}
         {isLoading ? (
-          <div className="text-center py-16">Loading products...</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+              <ProductCardSkeleton key={i} />
+            ))}
+          </div>
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">

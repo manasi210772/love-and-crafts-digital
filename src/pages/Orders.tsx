@@ -6,6 +6,9 @@ import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Package } from "lucide-react";
+import SEO from "@/components/SEO";
+import { formatPrice } from "@/lib/currency";
+import { OrderCardSkeleton } from "@/components/ui/skeleton-card";
 
 const Orders = () => {
   const { user } = useAuth();
@@ -36,6 +39,7 @@ const Orders = () => {
   if (!user) {
     return (
       <div className="container mx-auto px-4 py-16 text-center">
+        <SEO title="My Orders" description="View your order history" />
         <h1 className="font-display text-3xl mb-4">Please sign in to view your orders</h1>
         <Button onClick={() => navigate("/auth")}>Sign In</Button>
       </div>
@@ -43,11 +47,23 @@ const Orders = () => {
   }
 
   if (isLoading) {
-    return <div className="container mx-auto px-4 py-16">Loading...</div>;
+    return (
+      <div className="min-h-screen pt-20">
+        <SEO title="My Orders" description="View your order history" />
+        <div className="container mx-auto px-4 py-16">
+          <div className="space-y-6">
+            {[1, 2, 3].map((i) => (
+              <OrderCardSkeleton key={i} />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="min-h-screen pt-20">
+      <SEO title="My Orders" description="View your order history and track your handcrafted treasures" />
       {/* Hero Section */}
       <div className="relative bg-gradient-to-br from-primary/10 via-background to-accent/10 py-12 mb-12">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/5" />
@@ -112,12 +128,12 @@ const Orders = () => {
                           <p className="text-sm text-muted-foreground">Qty: {item.quantity}</p>
                         </div>
                       </div>
-                      <p className="font-semibold">${item.price_at_purchase}</p>
+                      <p className="font-semibold">{formatPrice(item.price_at_purchase)}</p>
                     </div>
                   ))}
                   <div className="flex justify-between items-center pt-3 border-t font-bold">
                     <span>Total</span>
-                    <span>${order.total_amount}</span>
+                    <span>{formatPrice(order.total_amount)}</span>
                   </div>
                 </div>
               </CardContent>

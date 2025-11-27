@@ -6,6 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import SEO from "@/components/SEO";
+import { formatPrice } from "@/lib/currency";
+import { Skeleton } from "@/components/ui/skeleton";
+import type { RazorpayOptions, RazorpayResponse } from "@/types/razorpay";
 
 const Cart = () => {
   const { user } = useAuth();
@@ -69,7 +73,17 @@ const Cart = () => {
 
   const checkout = useMutation({
     mutationFn: async () => {
-      if (!user || !cartItems) return;
+      if (!user || !cartItems || cartItems.length === 0) {
+        throw new Error("Cart is empty");
+      }
+
+      // Validate stock availability
+      for (const item of cartItems) {
+        const stock = item.products?.stock ?? 0;
+        if (stock < item.quantity) {
+          throw new Error(`${item.products?.name} is out of stock or has insufficient quantity`);
+        }
+      }
 
       const total = cartItems.reduce(
         (sum, item) => sum + (item.products?.price || 0) * item.quantity,
@@ -77,12 +91,9 @@ const Cart = () => {
       );
 
       // Check if Razorpay is loaded
-      // @ts-ignore
       if (!window.Razorpay) {
-        throw new Error("Razorpay SDK not loaded. Please refresh the page.");
+        throw new Error("Payment gateway not loaded. Please refresh the page.");
       }
-
-      console.log("Creating Razorpay order for amount:", total);
 
       // Create Razorpay order
       const { data: orderData, error: orderError } = await supabase.functions.invoke(
@@ -97,24 +108,29 @@ const Cart = () => {
       );
 
       if (orderError) {
-        console.error("Razorpay order creation error:", orderError);
-        throw orderError;
+        throw new Error(orderError.message || "Failed to create order");
       }
 
-      console.log("Razorpay order created:", orderData);
+      // Get primary color from CSS variable for Razorpay theme
+      const primaryColor = getComputedStyle(document.documentElement)
+        .getPropertyValue('--primary')
+        .trim();
+      
+      // Convert HSL to hex for Razorpay (fallback to default lavender)
+      const themeColor = '#A78BFA';
 
       // Initialize Razorpay checkout
-      const options = {
+      const options: RazorpayOptions = {
         key: orderData.key,
         amount: orderData.amount,
         currency: orderData.currency,
         name: 'Crafted with Love',
         description: 'Purchase handmade crafts',
         order_id: orderData.orderId,
-        handler: async function (response: any) {
+        handler: async function (response: RazorpayResponse) {
           try {
             // Verify payment
-            const { data: verifyData, error: verifyError } = await supabase.functions.invoke(
+            const { error: verifyError } = await supabase.functions.invoke(
               'verify-razorpay-payment',
               {
                 body: {
@@ -135,23 +151,20 @@ const Cart = () => {
             navigate("/orders");
           } catch (error) {
             toast.error("Payment verification failed");
-            console.error(error);
           }
         },
         prefill: {
           email: user.email,
         },
         theme: {
-          color: '#8B5CF6',
+          color: themeColor,
         },
       };
 
-      // @ts-ignore
       const razorpay = new window.Razorpay(options);
       razorpay.open();
     },
-    onError: (error: any) => {
-      console.error("Checkout error:", error);
+    onError: (error: Error) => {
       toast.error(error.message || "Failed to initiate payment");
     },
   });
@@ -159,6 +172,7 @@ const Cart = () => {
   if (!user) {
     return (
       <div className="container mx-auto px-4 py-16 text-center">
+        <SEO title="Shopping Cart" description="View and manage your shopping cart" />
         <h1 className="font-display text-3xl mb-4">Please sign in to view your cart</h1>
         <Button onClick={() => navigate("/auth")}>Sign In</Button>
       </div>
@@ -166,7 +180,46 @@ const Cart = () => {
   }
 
   if (isLoading) {
-    return <div className="container mx-auto px-4 py-16">Loading...</div>;
+    return (
+      <div className="min-h-screen">
+        <SEO title="Shopping Cart" description="View and manage your shopping cart" />
+        <div className="relative bg-gradient-to-br from-accent/10 via-background to-primary/10 py-16 mb-12">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto text-center">
+              <Skeleton className="h-16 w-16 rounded-full mx-auto mb-6" />
+              <Skeleton className="h-12 w-64 mx-auto mb-4" />
+              <Skeleton className="h-6 w-96 mx-auto" />
+            </div>
+          </div>
+        </div>
+        <div className="container mx-auto px-4 pb-16">
+          <div className="grid lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 space-y-4">
+              {[1, 2].map((i) => (
+                <Card key={i}>
+                  <CardContent className="p-4 flex gap-4">
+                    <Skeleton className="w-24 h-24 rounded" />
+                    <div className="flex-1">
+                      <Skeleton className="h-5 w-32 mb-2" />
+                      <Skeleton className="h-4 w-48 mb-2" />
+                      <Skeleton className="h-5 w-20" />
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+            <Card>
+              <CardContent className="p-6">
+                <Skeleton className="h-8 w-40 mb-4" />
+                <Skeleton className="h-4 w-full mb-2" />
+                <Skeleton className="h-6 w-full mb-4" />
+                <Skeleton className="h-10 w-full" />
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const total = cartItems?.reduce(
@@ -176,6 +229,8 @@ const Cart = () => {
 
   return (
     <div className="min-h-screen">
+      <SEO title="Shopping Cart" description="View and manage your shopping cart" />
+      
       {/* Hero Section */}
       <div className="relative bg-gradient-to-br from-accent/10 via-background to-primary/10 py-16 mb-12">
         <div className="absolute inset-0 bg-gradient-to-r from-accent/5 via-transparent to-primary/5" />
@@ -223,11 +278,18 @@ const Cart = () => {
                     src={item.products?.image_url}
                     alt={item.products?.name}
                     className="w-24 h-24 object-cover rounded"
+                    loading="lazy"
+                    onError={(e) => {
+                      e.currentTarget.src = '/placeholder.svg';
+                    }}
                   />
                   <div className="flex-1">
                     <h3 className="font-semibold">{item.products?.name}</h3>
                     <p className="text-sm text-muted-foreground">{item.products?.description}</p>
-                    <p className="font-semibold mt-2">${item.products?.price}</p>
+                    <p className="font-semibold mt-2">{formatPrice(item.products?.price || 0)}</p>
+                    {(item.products?.stock ?? 0) < item.quantity && (
+                      <p className="text-sm text-destructive mt-1">Low stock warning</p>
+                    )}
                   </div>
                   <div className="flex flex-col items-end justify-between">
                     <Button
@@ -277,11 +339,11 @@ const Cart = () => {
                 <div className="space-y-2 mb-4">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
-                    <span>${total.toFixed(2)}</span>
+                    <span>{formatPrice(total)}</span>
                   </div>
                   <div className="flex justify-between font-bold text-lg pt-2 border-t">
                     <span>Total</span>
-                    <span>${total.toFixed(2)}</span>
+                    <span>{formatPrice(total)}</span>
                   </div>
                 </div>
                 <Button

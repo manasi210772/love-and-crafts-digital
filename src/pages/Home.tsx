@@ -1,48 +1,89 @@
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { ShoppingBag, Sparkles } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import WorkshopCard from "@/components/WorkshopCard";
+import { ProductCardSkeleton, WorkshopCardSkeleton } from "@/components/ui/skeleton-card";
+import SEO from "@/components/SEO";
+import { supabase } from "@/integrations/supabase/client";
 import heroImage from "@/assets/hero-crafts.jpg";
+
+// Image mapping for products
 import lavenderCandleImg from "@/assets/lavender-candle.jpg";
+import potteryBowlImg from "@/assets/products/pottery-bowl.jpg";
+import braceletImg from "@/assets/products/bracelet.jpg";
+import candlesImg from "@/assets/products/candles.jpg";
+import embroideryImg from "@/assets/products/embroidery.jpg";
+import ceramicMugsImg from "@/assets/products/ceramic-mugs.jpg";
+
+// Workshop images
+import canvasImg from "@/assets/canvas-painting.jpg";
+import candleWorkshopImg from "@/assets/candle-workshop.jpg";
+import embroideryWorkshopImg from "@/assets/embroidery-workshop.jpg";
+
+const productImages: Record<string, string> = {
+  "Lavender Soy Candles": lavenderCandleImg,
+  "Clay Pottery Bowl": potteryBowlImg,
+  "Beaded Bracelet": braceletImg,
+  "Handmade Candles Set": candlesImg,
+  "Embroidery Hoop Art": embroideryImg,
+  "Ceramic Mugs": ceramicMugsImg,
+};
+
+const workshopImages: Record<string, string> = {
+  "Watercolor Painting Basics": canvasImg,
+  "Candle Making Workshop": candleWorkshopImg,
+  "Embroidery for Beginners": embroideryWorkshopImg,
+};
 
 const Home = () => {
-  const featuredProducts = [
-    {
-      name: "Lavender Soy Candles",
-      price: 18.99,
-      description: "Hand-poured candles with natural essential oils",
-      image: lavenderCandleImg,
-      category: "Home Decor",
+  // Fetch featured products from database
+  const { data: featuredProducts, isLoading: productsLoading } = useQuery({
+    queryKey: ["featured-products"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .limit(3);
+      
+      if (error) throw error;
+      return data || [];
     },
-    {
-      name: "Clay Pottery Bowl",
-      price: 34.99,
-      description: "Handcrafted ceramic bowl with unique glaze",
-      image: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=800",
-      category: "Clay Art",
-    },
-    {
-      name: "Beaded Bracelet",
-      price: 24.99,
-      description: "Handmade beaded bracelet with natural stones",
-      image: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800",
-      category: "Jewelry",
-    },
-  ];
+  });
 
-  const nextWorkshop = {
-    title: "Watercolor Painting Basics",
-    date: "Saturday, Nov 2, 2025",
-    time: "10:00 AM - 1:00 PM",
-    instructor: "Emma Richardson",
-    description: "Learn watercolor techniques and create your own masterpiece",
-    level: "Beginner" as const,
-    image: "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=800",
+  // Fetch next upcoming workshop from database
+  const { data: nextWorkshop, isLoading: workshopLoading } = useQuery({
+    queryKey: ["next-workshop"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("workshops")
+        .select("*")
+        .order("workshop_date", { ascending: true })
+        .limit(1)
+        .maybeSingle();
+      
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const getProductImage = (name: string, fallbackUrl: string) => {
+    return productImages[name] || fallbackUrl;
+  };
+
+  const getWorkshopImage = (title: string, fallbackUrl: string) => {
+    return workshopImages[title] || fallbackUrl;
   };
 
   return (
     <div className="animate-fade-in">
+      <SEO 
+        title="Crafted with Love - Handmade Crafts & Workshops"
+        description="Discover unique handmade treasures created by passionate artisans. Join our weekend workshops to learn new techniques."
+        keywords="handmade crafts, artisan products, craft workshops, handmade jewelry, pottery, candles"
+      />
+
       {/* Hero Section */}
       <section
         className="relative h-[600px] lg:h-[700px] flex items-center justify-center overflow-hidden"
@@ -105,11 +146,30 @@ const Home = () => {
             Featured Crafts
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredProducts.map((product, index) => (
-              <div key={index} className="animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                <ProductCard {...product} />
+            {productsLoading ? (
+              <>
+                <ProductCardSkeleton />
+                <ProductCardSkeleton />
+                <ProductCardSkeleton />
+              </>
+            ) : featuredProducts && featuredProducts.length > 0 ? (
+              featuredProducts.map((product, index) => (
+                <div key={product.id} className="animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <ProductCard
+                    id={product.id}
+                    name={product.name}
+                    price={product.price}
+                    description={product.description}
+                    image={getProductImage(product.name, product.image_url)}
+                    category={product.category}
+                  />
+                </div>
+              ))
+            ) : (
+              <div className="col-span-3 text-center text-muted-foreground py-8">
+                No products available at the moment.
               </div>
-            ))}
+            )}
           </div>
           <div className="text-center mt-12">
             <Button asChild size="lg" variant="outline" className="border-primary text-primary hover:bg-secondary rounded-full">
@@ -125,7 +185,24 @@ const Home = () => {
           This Weekend's Workshop
         </h2>
         <div className="max-w-3xl mx-auto">
-          <WorkshopCard {...nextWorkshop} />
+          {workshopLoading ? (
+            <WorkshopCardSkeleton />
+          ) : nextWorkshop ? (
+            <WorkshopCard
+              id={nextWorkshop.id}
+              title={nextWorkshop.title}
+              date={nextWorkshop.workshop_date}
+              time={nextWorkshop.workshop_time}
+              instructor={nextWorkshop.instructor}
+              description={nextWorkshop.description}
+              level={nextWorkshop.level as "Beginner" | "Intermediate" | "Advanced"}
+              image={getWorkshopImage(nextWorkshop.title, nextWorkshop.image_url)}
+            />
+          ) : (
+            <div className="text-center text-muted-foreground py-8">
+              No upcoming workshops at the moment.
+            </div>
+          )}
         </div>
         <div className="text-center mt-8">
           <Button asChild size="lg" variant="outline" className="border-primary text-primary hover:bg-secondary rounded-full">

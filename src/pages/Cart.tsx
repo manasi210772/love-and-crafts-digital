@@ -243,7 +243,7 @@ const Cart = () => {
               </div>
             </div>
             
-            <h1 className="font-display text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-accent via-primary to-accent bg-clip-text text-transparent">
+            <h1 className="font-display text-5xl md:text-6xl font-bold mb-4 pb-2 bg-gradient-to-r from-accent via-primary to-accent bg-clip-text text-transparent leading-relaxed">
               Shopping Cart
             </h1>
             

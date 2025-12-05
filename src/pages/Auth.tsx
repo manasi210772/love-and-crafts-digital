@@ -184,7 +184,7 @@ const Auth = () => {
               Crafted with Love
             </span>
           </div>
-          <CardTitle className="text-3xl font-semibold">
+          <CardTitle className="font-clean text-3xl font-semibold">
             {isLogin ? "Welcome Back" : "Create Account"}
           </CardTitle>
           <CardDescription>

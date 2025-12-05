@@ -16,6 +16,7 @@ export default {
       fontFamily: {
         display: ['Dancing Script', 'cursive'],
         body: ['Poppins', 'sans-serif'],
+        clean: ['Arial', 'Helvetica', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

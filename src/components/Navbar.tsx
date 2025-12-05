@@ -47,7 +47,7 @@ const Navbar = () => {
           <Link to="/" className="flex items-center space-x-2 group">
             <Heart className="w-8 h-8 text-primary group-hover:fill-primary transition-all" />
             {location.pathname !== "/" && (
-              <span className="text-2xl font-clean font-bold text-primary transition-colors">
+              <span className="text-2xl font-display font-bold text-primary transition-colors">
                 Crafted with Love
               </span>
             )}

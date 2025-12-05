@@ -37,8 +37,8 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
-        isScrolled ? "bg-background/95 backdrop-blur-md shadow-sm border-border" : "bg-background/90 backdrop-blur-sm border-border/50"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? "backdrop-blur-sm" : ""
       }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -47,108 +47,110 @@ const Navbar = () => {
           <Link to="/" className="flex items-center space-x-2 group">
             <Heart className="w-8 h-8 text-primary group-hover:fill-primary transition-all" />
             {location.pathname !== "/" && (
-              <span className="text-2xl font-display font-bold text-foreground transition-colors">
+              <span className="text-2xl font-clean font-bold text-primary transition-colors">
                 Crafted with Love
               </span>
             )}
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`px-4 py-2 font-medium transition-colors relative group rounded-lg ${
-                  isActive(link.path)
-                    ? "text-primary bg-primary/10"
-                    : "text-foreground hover:text-primary hover:bg-accent/50"
-                }`}
-              >
-                {link.name}
-                <span
-                  className={`absolute -bottom-1 left-4 right-4 h-0.5 bg-primary transition-transform origin-left ${
-                    isActive(link.path) ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+          <div className="hidden md:flex items-center gap-8">
+            <div className="flex items-center gap-6">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={`font-clean font-medium text-sm tracking-wide transition-all duration-200 relative ${
+                    isActive(link.path)
+                      ? "text-primary"
+                      : "text-foreground/80 hover:text-primary"
                   }`}
-                />
-              </Link>
-            ))}
-            
-            <div className="h-6 w-px bg-border/50 mx-2" />
+                >
+                  {link.name}
+                  <span
+                    className={`absolute -bottom-1 left-0 right-0 h-0.5 bg-primary transition-transform origin-left ${
+                      isActive(link.path) ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                    }`}
+                  />
+                </Link>
+              ))}
+            </div>
             
             <TooltipProvider>
-              {user && (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div>
-                      <CartButton />
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Shopping Cart</p>
-                  </TooltipContent>
-                </Tooltip>
-              )}
-              
-              {user ? (
-                <div className="flex items-center gap-1 ml-1">
+              <div className="flex items-center gap-2">
+                {user && (
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Link to="/my-workshops">
+                      <div>
+                        <CartButton />
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Shopping Cart</p>
+                    </TooltipContent>
+                  </Tooltip>
+                )}
+                
+                {user ? (
+                  <>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Link to="/my-workshops">
+                          <Button 
+                            variant="ghost" 
+                            size="icon"
+                            className="h-9 w-9 text-foreground/80 hover:text-primary hover:bg-primary/10"
+                          >
+                            <Calendar className="h-5 w-5" />
+                          </Button>
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>My Workshops</p>
+                      </TooltipContent>
+                    </Tooltip>
+                    
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Link to="/orders">
+                          <Button 
+                            variant="ghost" 
+                            size="icon"
+                            className="h-9 w-9 text-foreground/80 hover:text-primary hover:bg-primary/10"
+                          >
+                            <User className="h-5 w-5" />
+                          </Button>
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>My Orders</p>
+                      </TooltipContent>
+                    </Tooltip>
+                    
+                    <Tooltip>
+                      <TooltipTrigger asChild>
                         <Button 
                           variant="ghost" 
                           size="icon"
-                          className="h-10 w-10 hover:bg-accent hover:text-accent-foreground"
+                          onClick={signOut}
+                          className="h-9 w-9 text-foreground/80 hover:text-primary hover:bg-primary/10"
                         >
-                          <Calendar className="h-5 w-5" />
+                          <LogOut className="h-5 w-5" />
                         </Button>
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>My Workshops</p>
-                    </TooltipContent>
-                  </Tooltip>
-                  
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Link to="/orders">
-                        <Button 
-                          variant="ghost" 
-                          size="icon"
-                          className="h-10 w-10 hover:bg-accent hover:text-accent-foreground"
-                        >
-                          <User className="h-5 w-5" />
-                        </Button>
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>My Orders</p>
-                    </TooltipContent>
-                  </Tooltip>
-                  
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button 
-                        variant="ghost" 
-                        size="icon"
-                        onClick={signOut}
-                        className="h-10 w-10 hover:bg-accent hover:text-accent-foreground"
-                      >
-                        <LogOut className="h-5 w-5" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Sign Out</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </div>
-              ) : (
-                <Link to="/auth" className="ml-2">
-                  <Button variant="default" size="sm" className="h-10">
-                    Sign In
-                  </Button>
-                </Link>
-              )}
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Sign Out</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </>
+                ) : (
+                  <Link to="/auth">
+                    <Button variant="default" size="sm" className="h-9 font-clean">
+                      Sign In
+                    </Button>
+                  </Link>
+                )}
+              </div>
             </TooltipProvider>
           </div>
 

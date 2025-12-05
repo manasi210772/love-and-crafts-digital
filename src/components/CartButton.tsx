@@ -31,7 +31,7 @@ const CartButton = () => {
     <Button
       variant="ghost"
       size="icon"
-      className="relative"
+      className="relative h-9 w-9 text-foreground/80 hover:text-primary hover:bg-primary/10"
       onClick={() => navigate("/cart")}
     >
       <ShoppingCart className="h-5 w-5" />

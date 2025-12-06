@@ -63,7 +63,7 @@ const Navbar = () => {
                   className={`font-clean font-bold text-sm tracking-wide transition-all duration-200 relative ${
                     isActive(link.path)
                       ? "text-primary"
-                      : "text-foreground/80 hover:text-primary"
+                      : "text-foreground hover:text-primary"
                   }`}
                 >
                   {link.name}

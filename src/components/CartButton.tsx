@@ -1,12 +1,16 @@
 import { ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 
-const CartButton = () => {
+interface CartButtonProps {
+  isHeroStyle?: boolean;
+}
+
+const CartButton = ({ isHeroStyle = false }: CartButtonProps) => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -31,7 +35,11 @@ const CartButton = () => {
     <Button
       variant="ghost"
       size="icon"
-      className="relative h-9 w-9 text-foreground/80 hover:text-primary hover:bg-primary/10"
+      className={`relative h-9 w-9 transition-all ${
+        isHeroStyle 
+          ? "text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)] hover:text-white/80 hover:bg-white/10" 
+          : "text-foreground/80 hover:text-primary hover:bg-primary/10"
+      }`}
       onClick={() => navigate("/cart")}
     >
       <ShoppingCart className="h-5 w-5" />

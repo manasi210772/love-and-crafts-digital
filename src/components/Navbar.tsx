@@ -35,18 +35,24 @@ const Navbar = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
+  const isHomePage = location.pathname === "/";
+  const navTextClass = isHomePage && !isScrolled 
+    ? "text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]" 
+    : "text-foreground";
+  const navHoverClass = "hover:text-primary";
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "backdrop-blur-sm" : ""
+        isScrolled ? "backdrop-blur-md bg-background/80" : ""
       }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 group">
-            <Heart className="w-8 h-8 text-primary group-hover:fill-primary transition-all" />
-            {location.pathname !== "/" && (
+            <Heart className={`w-8 h-8 transition-all group-hover:fill-primary ${isHomePage && !isScrolled ? "text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]" : "text-primary"}`} />
+            {!isHomePage && (
               <span className="text-2xl font-display font-bold text-primary transition-colors">
                 Crafted with Love
               </span>
@@ -62,14 +68,14 @@ const Navbar = () => {
                   to={link.path}
                   className={`font-clean font-bold text-sm tracking-wide transition-all duration-200 relative ${
                     isActive(link.path)
-                      ? "text-primary"
-                      : "text-foreground hover:text-primary"
+                      ? isHomePage && !isScrolled ? "text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]" : "text-primary"
+                      : `${navTextClass} ${navHoverClass}`
                   }`}
                 >
                   {link.name}
                   <span
-                    className={`absolute -bottom-1 left-0 right-0 h-0.5 bg-primary transition-transform origin-left ${
-                      isActive(link.path) ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                    className={`absolute -bottom-1 left-0 right-0 h-0.5 ${isHomePage && !isScrolled ? "bg-white" : "bg-primary"} transition-transform origin-left ${
+                      isActive(link.path) ? "scale-x-100" : "scale-x-0"
                     }`}
                   />
                 </Link>
@@ -82,7 +88,7 @@ const Navbar = () => {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <div>
-                        <CartButton />
+                        <CartButton isHeroStyle={isHomePage && !isScrolled} />
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -99,7 +105,11 @@ const Navbar = () => {
                           <Button 
                             variant="ghost" 
                             size="icon"
-                            className="h-9 w-9 text-foreground/80 hover:text-primary hover:bg-primary/10"
+                            className={`h-9 w-9 transition-all ${
+                              isHomePage && !isScrolled 
+                                ? "text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)] hover:text-white/80 hover:bg-white/10" 
+                                : "text-foreground/80 hover:text-primary hover:bg-primary/10"
+                            }`}
                           >
                             <Calendar className="h-5 w-5" />
                           </Button>
@@ -116,7 +126,11 @@ const Navbar = () => {
                           <Button 
                             variant="ghost" 
                             size="icon"
-                            className="h-9 w-9 text-foreground/80 hover:text-primary hover:bg-primary/10"
+                            className={`h-9 w-9 transition-all ${
+                              isHomePage && !isScrolled 
+                                ? "text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)] hover:text-white/80 hover:bg-white/10" 
+                                : "text-foreground/80 hover:text-primary hover:bg-primary/10"
+                            }`}
                           >
                             <User className="h-5 w-5" />
                           </Button>
@@ -133,7 +147,11 @@ const Navbar = () => {
                           variant="ghost" 
                           size="icon"
                           onClick={signOut}
-                          className="h-9 w-9 text-foreground/80 hover:text-primary hover:bg-primary/10"
+                          className={`h-9 w-9 transition-all ${
+                            isHomePage && !isScrolled 
+                              ? "text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)] hover:text-white/80 hover:bg-white/10" 
+                              : "text-foreground/80 hover:text-primary hover:bg-primary/10"
+                          }`}
                         >
                           <LogOut className="h-5 w-5" />
                         </Button>
@@ -158,7 +176,11 @@ const Navbar = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden"
+            className={`md:hidden transition-all ${
+              isHomePage && !isScrolled 
+                ? "text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)] hover:bg-white/10" 
+                : "hover:bg-primary/10"
+            }`}
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

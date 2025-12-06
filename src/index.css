@@ -50,6 +50,10 @@ All colors MUST be HSL.
     --shadow-soft: 0 4px 20px -4px hsl(270 50% 70% / 0.15);
     --shadow-hover: 0 8px 30px -8px hsl(270 50% 70% / 0.25);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Navbar tokens */
+    --nav-text: 0 0% 100%;
+    --nav-text-shadow: 0 1px 3px hsl(0 0% 0% / 0.5);
 
     --sidebar-background: 0 0% 98%;
 

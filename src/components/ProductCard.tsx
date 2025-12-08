@@ -73,8 +73,8 @@ const ProductCard = ({ id, name, price, description, image, category }: ProductC
   });
 
   return (
-    <Card className="group overflow-hidden hover-lift border-border bg-card rounded-2xl">
-      <div className="aspect-square overflow-hidden">
+    <Card className="group overflow-hidden hover-lift border-border bg-card rounded-2xl h-full flex flex-col">
+      <div className="aspect-square overflow-hidden flex-shrink-0">
         <img
           src={imageError ? '/placeholder.svg' : image}
           alt={name}
@@ -83,10 +83,10 @@ const ProductCard = ({ id, name, price, description, image, category }: ProductC
           onError={() => setImageError(true)}
         />
       </div>
-      <CardContent className="p-4">
+      <CardContent className="p-4 flex-1 flex flex-col">
         <div className="text-xs font-medium text-primary mb-1">{category}</div>
-        <h3 className="font-display text-xl font-semibold mb-2">{name}</h3>
-        <p className="text-muted-foreground text-sm mb-3 line-clamp-2">{description}</p>
+        <h3 className="font-display text-xl font-semibold mb-2 line-clamp-1">{name}</h3>
+        <p className="text-muted-foreground text-sm mb-3 line-clamp-2 flex-1">{description}</p>
         <div className="text-2xl font-bold text-primary">{formatPrice(price)}</div>
       </CardContent>
       <CardFooter className="p-4 pt-0">

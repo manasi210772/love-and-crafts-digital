@@ -101,7 +101,7 @@ const Cart = () => {
         {
           body: {
             amount: total,
-            currency: 'INR',
+            currency: 'USD',
             receipt: `receipt_${Date.now()}`,
           },
         }

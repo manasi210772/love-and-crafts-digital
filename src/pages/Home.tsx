@@ -16,6 +16,7 @@ import braceletImg from "@/assets/products/bracelet.jpg";
 import candlesImg from "@/assets/products/candles.jpg";
 import embroideryImg from "@/assets/products/embroidery.jpg";
 import ceramicMugsImg from "@/assets/products/ceramic-mugs.jpg";
+import silverNecklaceImg from "@/assets/products/silver-necklace.jpg";
 
 // Workshop images
 import canvasImg from "@/assets/canvas-painting.jpg";
@@ -29,6 +30,7 @@ const productImages: Record<string, string> = {
   "Handmade Candles Set": candlesImg,
   "Embroidery Hoop Art": embroideryImg,
   "Ceramic Mugs": ceramicMugsImg,
+  "Handmade Silver Necklace": silverNecklaceImg,
 };
 
 const workshopImages: Record<string, string> = {

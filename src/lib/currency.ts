@@ -1,10 +1,10 @@
 /**
- * Format price in INR currency
+ * Format price in USD currency
  */
 export const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('en-IN', {
+  return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'INR',
+    currency: 'USD',
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   }).format(price);
@@ -14,7 +14,7 @@ export const formatPrice = (price: number): string => {
  * Format price without currency symbol
  */
 export const formatPriceValue = (price: number): string => {
-  return new Intl.NumberFormat('en-IN', {
+  return new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   }).format(price);

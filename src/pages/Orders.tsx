@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Package } from "lucide-react";
 import SEO from "@/components/SEO";
 import { formatPrice } from "@/lib/currency";
+import { getProductImage } from "@/lib/productImages";
 import { OrderCardSkeleton } from "@/components/ui/skeleton-card";
 
 const Orders = () => {
@@ -119,7 +120,7 @@ const Orders = () => {
                     <div key={item.id} className="flex justify-between items-center">
                       <div className="flex gap-3">
                         <img
-                          src={item.products?.image_url}
+                          src={getProductImage(item.products?.name || '', item.products?.image_url || '/placeholder.svg')}
                           alt={item.products?.name}
                           className="w-16 h-16 object-cover rounded"
                         />

@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import SEO from "@/components/SEO";
 import { formatPrice } from "@/lib/currency";
+import { getProductImage } from "@/lib/productImages";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { RazorpayOptions, RazorpayResponse } from "@/types/razorpay";
 
@@ -275,7 +276,7 @@ const Cart = () => {
               <Card key={item.id}>
                 <CardContent className="p-4 flex gap-4">
                   <img
-                    src={item.products?.image_url}
+                    src={getProductImage(item.products?.name || '', item.products?.image_url || '/placeholder.svg')}
                     alt={item.products?.name}
                     className="w-24 h-24 object-cover rounded"
                     loading="lazy"

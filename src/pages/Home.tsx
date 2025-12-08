@@ -90,7 +90,7 @@ const Home = () => {
       <section
         className="relative h-[600px] lg:h-[700px] flex items-center justify-center overflow-hidden"
         style={{
-          backgroundImage: `url(${heroImage})`,
+          backgroundImage: `url(${embroideryWorkshopImg})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

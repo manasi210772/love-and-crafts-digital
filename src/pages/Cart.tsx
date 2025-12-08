@@ -51,7 +51,28 @@ const Cart = () => {
         if (error) throw error;
       }
     },
-    onSuccess: () => {
+    onMutate: async ({ id, quantity }) => {
+      await queryClient.cancelQueries({ queryKey: ["cart", user?.id] });
+      const previousCart = queryClient.getQueryData(["cart", user?.id]);
+      
+      queryClient.setQueryData(["cart", user?.id], (old: typeof cartItems) => {
+        if (!old) return old;
+        if (quantity === 0) {
+          return old.filter((item) => item.id !== id);
+        }
+        return old.map((item) =>
+          item.id === id ? { ...item, quantity } : item
+        );
+      });
+      
+      return { previousCart };
+    },
+    onError: (err, variables, context) => {
+      if (context?.previousCart) {
+        queryClient.setQueryData(["cart", user?.id], context.previousCart);
+      }
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
       queryClient.invalidateQueries({ queryKey: ["cart-count"] });
     },
@@ -65,10 +86,29 @@ const Cart = () => {
         .eq("id", id);
       if (error) throw error;
     },
+    onMutate: async (id) => {
+      await queryClient.cancelQueries({ queryKey: ["cart", user?.id] });
+      const previousCart = queryClient.getQueryData(["cart", user?.id]);
+      
+      queryClient.setQueryData(["cart", user?.id], (old: typeof cartItems) => {
+        if (!old) return old;
+        return old.filter((item) => item.id !== id);
+      });
+      
+      return { previousCart };
+    },
+    onError: (err, variables, context) => {
+      if (context?.previousCart) {
+        queryClient.setQueryData(["cart", user?.id], context.previousCart);
+      }
+      toast.error("Failed to remove item");
+    },
     onSuccess: () => {
+      toast.success("Item removed from cart");
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
       queryClient.invalidateQueries({ queryKey: ["cart-count"] });
-      toast.success("Item removed from cart");
     },
   });
 

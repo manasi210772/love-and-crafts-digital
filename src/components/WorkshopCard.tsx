@@ -110,7 +110,7 @@ const WorkshopCard = ({
   };
 
   return (
-    <Card className="group overflow-hidden hover-lift border-border bg-card rounded-2xl">
+    <Card className="group overflow-hidden hover-lift border-border bg-card rounded-2xl h-full flex flex-col">
       <div className="aspect-video overflow-hidden relative">
         <img
           src={imageError ? '/placeholder.svg' : image}
@@ -123,10 +123,10 @@ const WorkshopCard = ({
           {level}
         </Badge>
       </div>
-      <CardContent className="p-6">
+      <CardContent className="p-6 flex-1 flex flex-col">
         <h3 className="font-display text-2xl font-semibold mb-3">{title}</h3>
-        <p className="text-muted-foreground mb-4">{description}</p>
-        <div className="space-y-2 text-sm">
+        <p className="text-muted-foreground mb-4 flex-1">{description}</p>
+        <div className="space-y-2 text-sm mt-auto">
           <div className="flex items-center text-muted-foreground">
             <Calendar className="w-4 h-4 mr-2 text-primary" />
             <span>{date}</span>

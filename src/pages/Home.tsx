@@ -37,6 +37,7 @@ const workshopImages: Record<string, string> = {
   "Watercolor Painting Basics": canvasImg,
   "Candle Making Workshop": candleWorkshopImg,
   "Embroidery for Beginners": embroideryWorkshopImg,
+  "Advanced Embroidery Techniques": embroideryWorkshopImg,
 };
 
 const Home = () => {
@@ -90,7 +91,7 @@ const Home = () => {
       <section
         className="relative h-[600px] lg:h-[700px] flex items-center justify-center overflow-hidden"
         style={{
-          backgroundImage: `url(${embroideryWorkshopImg})`,
+          backgroundImage: `url(${heroImage})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

@@ -13,7 +13,30 @@ serve(async (req) => {
   }
 
   try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, userId, totalAmount } = await req.json();
+    // Verify authenticated user
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      throw new Error("Missing authorization header");
+    }
+
+    const supabaseAuth = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? ''
+    );
+
+    const { data: { user }, error: authError } = await supabaseAuth.auth.getUser(
+      authHeader.replace('Bearer ', '')
+    );
+
+    if (authError || !user) {
+      console.error("Auth error:", authError);
+      throw new Error("Unauthorized");
+    }
+
+    const userId = user.id; // Use authenticated user ID, not client-provided
+    console.log("Authenticated user:", userId);
+
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, totalAmount } = await req.json();
 
     // Verify signature
     const generated_signature = createHmac("sha256", Deno.env.get('RAZORPAY_KEY_SECRET') || "")
